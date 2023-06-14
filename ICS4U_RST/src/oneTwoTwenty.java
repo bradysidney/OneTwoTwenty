@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -23,36 +24,29 @@ public class oneTwoTwenty {
 	static final int LARGE_FONT = 30;
 	static final int MEDIUM_FONT = 22;
 	static final int SMALL_FONT = 14;
+	static final int SCREEN_WIDTH = 1920;
+	static final int SCREEN_HEIGHT = 1080;
+	private Square[] box;
+	private GridPane root; 
 	
-	gamePlayer player;
-	
-	TextField placement;
-	Button btnNewNum, btnRestart, btnExit
-
 	public void start(Stage myStage) throws Exception {
-		
-GridPane root = new GridPane();
-    	
-    	root.setHgap(GAP);
-    	root.setVgap(GAP);
+		root = new GridPane();
+		root.setHgap(GAP);
+		root.setVgap(GAP);
 		root.setPadding(new Insets(GAP, GAP, GAP, GAP));
+		root.setAlignment(Pos.CENTER);
 		
-		GridPane inst = new GridPane();
-    	
-    	inst.setHgap(GAP);
-    	inst.setVgap(GAP);
-		inst.setPadding(new Insets(GAP, GAP, GAP, GAP));
+		box = new Square[20];
 		
-		TabPane tabs = new TabPane();
-		
-		Tab gameTab = new Tab("Game");
-		Tab instTab = new Tab("Instructions");
-		
-		gameTab.setClosable(false);
-		instTab.setClosable(false);
-		
-		player = new gamePlayer();
-		
+		for (int row = 0; row <= 19; row++) {
+			box[row] = new Square();
+			box[row].setOnAction(event -> playSquare(event));
+			root.add(box[row], row);
+		}
 	}
 	
-}
+	
+	
+	
+	
+}	
