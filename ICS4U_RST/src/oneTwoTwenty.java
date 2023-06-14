@@ -28,6 +28,11 @@ public class oneTwoTwenty {
 	static final int SCREEN_HEIGHT = 1080;
 	private Square[] box;
 	private GridPane root; 
+	public int randomNum;
+	private Label lblNumber;
+	
+	//TODO: Set each box as a button with a label inside, replace label text with random num when button is clicked
+	//Create an array of buttons and labels placed in each box
 	
 	public void start(Stage myStage) throws Exception {
 		root = new GridPane();
@@ -43,10 +48,65 @@ public class oneTwoTwenty {
 			box[row].setOnAction(event -> playSquare(event));
 			root.add(box[row], row);
 		}
+		
+	
+		Button btnReset = new Button("RESET");
+		btnReset.setOnAction(event -> gameReset());
+		root.add(btnReset, 0, 4, 1, 1);
+		
+		lblNumber = new Label();
+		lblNumber.setFont(Font.font(FONT));
+		root.add(lblNumber, 0, 4, 1, 2);
+	
+		Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT);
+		myStage.setTitle("OneTwoTwenty");
+		myStage.setScene(scene);
+		myStage.show();
 	}
 	
+	private void playSquare(ActionEvent event) {
+
+		Square temp = (Square.getValue)
+
+		if (temp.getValue() == Square.getValue()) {
+			temp.playSquare(Square.getValue());
+		}
+
+	}
 	
+	private void winCheck() {
+		for (int row = 0; row < 20; row++) {
+			//TODO: IMPLEMENT ALGORITHM TO CHECK IF NEXT NUMBER IS GREATER THAN PREVIOUS, IF YES THEN GAME GOES TILL 20 BOXES OCCUPIED, IF NO THEN GAME LOSS
+		}
+		
+	}
 	
+	public void gameReset() {
+			
+			for (int row = 0; row <= 19; row++) {
+				root.getChildren().remove(box[row]);
+				box[row] = new Square();
+				box[row].setOnAction(event -> playSquare(event));
+				root.add(box[row], row);
+			
+			}
+			
+			lblNumber.setText("___");
+	}
 	
-	
+	public int randomNum() {
+		int min = 000; 
+	    int max = 999; 
+	    
+	    randomNum = (int)Math.floor(Math.random() * (max - min + 1) + min);
+	    
+	    return randomNum;
+	}
+    
+    
+	public static void main(String[] args) {
+        launch(args);
+    }
+
+
 }	
