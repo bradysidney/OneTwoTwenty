@@ -197,7 +197,15 @@ public class oneTwoTwenty extends Application{
 	}
 	
 	private void lossCheck() {
-		for (int row = 0; row < 20; row++) {
+		for (int i = 0; i < 20; i++) {
+			
+			for (int j = 0; j < 20; j++) {
+				
+				if (box[j].getTextFill() > box[j +1].getTextFill()) {
+					
+				}
+				
+			}
 			//TODO: IMPLEMENT ALGORITHM TO CHECK IF NEXT NUMBER IS GREATER THAN PREVIOUS, IF YES THEN GAME GOES TILL 20 BOXES OCCUPIED, IF NO THEN GAME LOSS
 		}
 		
