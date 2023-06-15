@@ -196,7 +196,7 @@ public class oneTwoTwenty extends Application{
 		
 	}
 	
-	private void winCheck() {
+	private void lossCheck() {
 		for (int row = 0; row < 20; row++) {
 			//TODO: IMPLEMENT ALGORITHM TO CHECK IF NEXT NUMBER IS GREATER THAN PREVIOUS, IF YES THEN GAME GOES TILL 20 BOXES OCCUPIED, IF NO THEN GAME LOSS
 		}
