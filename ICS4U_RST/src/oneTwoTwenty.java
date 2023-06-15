@@ -31,7 +31,7 @@ public class oneTwoTwenty extends Application{
 	Tab instTab, menuTab, gameTab;
 	public int randomNum;
 	private Label lblNumber;
-	public Button btnRandomNum, btnReset, btnInst, btnPlay, btnMenu, btnInst2, btnGame2, btnMenu2;
+	public Button btnRandomNum, btnReset, btnInst, btnPlay, btnMenu, btnInst2, btnGame2, btnMenu2, btnPlay2;
 	TabPane tabs = new TabPane();
 	
 	public void start(Stage myStage) throws Exception {
@@ -59,7 +59,7 @@ public class oneTwoTwenty extends Application{
 		root.setAlignment(Pos.CENTER);
 		inst.setAlignment(Pos.CENTER);
 		menu.setAlignment(Pos.CENTER);
-		inst.setGridLinesVisible(false);
+		menu.setGridLinesVisible(false);
 		
 		topBox = new Square[20];
 		box = new Square[20];
@@ -84,9 +84,17 @@ public class oneTwoTwenty extends Application{
 			box[row].setDisable(true);
 		}
 		
+		btnMenu = new Button("MENU");
+		btnMenu.setOnAction(event -> switchMenu(event));
+		btnMenu.setMinWidth(115);
+		btnMenu.setFont(Font.font("Courier New"));
+		inst.add(btnMenu, 0, 5, 4, 1);
+		btnMenu.setTextAlignment(TextAlignment.CENTER);
+		
 		btnMenu2 = new Button("MENU");
 		btnMenu2.setOnAction(event -> switchMenu(event));
 		btnMenu2.setMinWidth(115);
+		btnMenu2.setFont(Font.font("Courier New"));
 		root.add(btnMenu2, 14, 4, 2, 1);
 		btnMenu2.setTextAlignment(TextAlignment.CENTER);
 		
@@ -99,6 +107,7 @@ public class oneTwoTwenty extends Application{
 		btnInst2 = new Button("INSTRUCTIONS");
 		btnInst2.setOnAction(event -> switchInst(event));
 		btnInst2.setMinWidth(115);
+		btnInst2.setFont(Font.font("Courier New"));
 		root.add(btnInst2, 18, 4, 2, 1);
 		btnInst2.setTextAlignment(TextAlignment.CENTER);
 		
@@ -111,13 +120,23 @@ public class oneTwoTwenty extends Application{
 		btnInst = new Button("INSTRUCTIONS");
 		btnInst.setOnAction(event -> switchInst(event));
 		btnInst.setMinWidth(115);
-		menu.add(btnInst, 0, 0, 4, 1);
+		btnInst.setFont(Font.font("Courier New"));
+		menu.add(btnInst, 0, 3, 4, 1);
 		btnInst.setTextAlignment(TextAlignment.CENTER);
 		
 		btnPlay = new Button("PLAY");
 		btnPlay.setOnAction(event -> switchPlay(event));
+		btnPlay.setMinWidth(115);
+		btnPlay.setFont(Font.font("Courier New"));
 		menu.add(btnPlay, 0, 2, 4, 1);
 		btnPlay.setTextAlignment(TextAlignment.CENTER);
+		
+		btnPlay2 = new Button("PLAY");
+		btnPlay2.setOnAction(event -> switchPlay(event));
+		btnPlay2.setMinWidth(115);
+		btnPlay2.setFont(Font.font("Courier New"));
+		inst.add(btnPlay2, 0, 4, 4, 1);
+		btnPlay2.setTextAlignment(TextAlignment.CENTER);
 		
 		lblNumber = new Label();
 		lblNumber.setFont(Font.font(MEDIUM_FONT));
@@ -135,9 +154,15 @@ public class oneTwoTwenty extends Application{
 		ImageView imgLogo = new ImageView(logo);
 		imgLogo.setFitWidth(1026.415/7);
 		imgLogo.setFitHeight(909.378/7);
-		inst.add(imgLogo, 0, 0);
 		menu.add(imgLogo, 0, 0);
 		GridPane.setHalignment(imgLogo, HPos.CENTER);
+		
+		Image logo2 = new Image(getClass().getResource("/images/logo").toString());
+		ImageView imgLogo2 = new ImageView(logo);
+		imgLogo2.setFitWidth(1026.415/7);
+		imgLogo2.setFitHeight(909.378/7);
+		inst.add(imgLogo2, 0, 0);
+		GridPane.setHalignment(imgLogo2, HPos.CENTER);
 		
 		gameTab.setContent(root);
 		instTab.setContent(inst);
