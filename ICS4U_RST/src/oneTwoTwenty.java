@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -28,7 +29,7 @@ public class oneTwoTwenty extends Application{
 	private GridPane menu, root, inst;
 	Tab instTab, menuTab, gameTab;
 	public int randomNum;
-	private Label lblNumber;
+	private Label lblNumber, lblLoser, lblLoser2;
 	public Button btnRandomNum, btnReset, btnInst, btnPlay, btnMenu, btnInst2, btnGame2, btnMenu2, btnPlay2;
 	TabPane tabs = new TabPane();
 	
@@ -53,7 +54,7 @@ public class oneTwoTwenty extends Application{
 		menuTab.setClosable(false);
 		gameTab.setClosable(false);
 		instTab.setClosable(false);
-		
+				
 		root.setAlignment(Pos.CENTER);
 		inst.setAlignment(Pos.CENTER);
 		menu.setAlignment(Pos.CENTER);
@@ -83,7 +84,7 @@ public class oneTwoTwenty extends Application{
 			topBox[row].setText(Integer.toString(row + 1));
 			box[row].setDisable(true);
 		}
-		
+			
 		btnMenu = new Button("MENU");
 		btnMenu.setOnAction(event -> switchMenu(event));
 		btnMenu.setMinWidth(115);
@@ -120,7 +121,7 @@ public class oneTwoTwenty extends Application{
 		
 		btnInst = new Button("INSTRUCTIONS");
 		btnInst.setOnAction(event -> switchInst(event));
-		btnInst.setMinWidth(115);
+		btnInst.setMinWidth(140);
 		btnInst.setFont(Font.font("Courier New"));
 		menu.add(btnInst, 0, 3);
 		btnInst.setTextAlignment(TextAlignment.CENTER);
@@ -128,7 +129,7 @@ public class oneTwoTwenty extends Application{
 		
 		btnPlay = new Button("PLAY");
 		btnPlay.setOnAction(event -> switchPlay(event));
-		btnPlay.setMinWidth(115);
+		btnPlay.setMinWidth(140);
 		btnPlay.setFont(Font.font("Courier New"));
 		menu.add(btnPlay, 0, 2);
 		btnPlay.setTextAlignment(TextAlignment.CENTER);
@@ -148,6 +149,21 @@ public class oneTwoTwenty extends Application{
 		lblNumber.setFont(Font.font("Courier New", 40));
 		root.add(lblNumber, 0, 0, 20, 1);
 		GridPane.setHalignment(lblNumber, HPos.CENTER);
+		
+		lblLoser = new Label();
+		lblLoser.setFont(Font.font(60));
+		lblLoser.setText("");
+		lblLoser.setFont(Font.font("Courier New", 40));
+		lblLoser.setTextFill(Color.RED);
+		root.add(lblLoser, 0, 0, 20, 1);
+		GridPane.setHalignment(lblLoser, HPos.CENTER);
+		
+		lblLoser2 = new Label();
+		lblLoser2.setFont(Font.font(60));
+		lblLoser2.setText("");
+		lblLoser2.setFont(Font.font("Courier New", 40));
+		root.add(lblLoser2, 0, 0, 20, 24);
+		GridPane.setHalignment(lblLoser2, HPos.CENTER);
 		
 		Label lblInst = new Label(instructions());
 		lblInst.setFont(Font.font(MEDIUM_FONT));
@@ -183,7 +199,7 @@ public class oneTwoTwenty extends Application{
 	}
 	
 	private void playSquare(ActionEvent event, boolean visible) {
-	
+		
 		Square filled = (Square) event.getSource();
 		filled.playSquare(randomNum);
 		
@@ -194,19 +210,37 @@ public class oneTwoTwenty extends Application{
 			}
 		btnRandomNum.setDisable(false);
 		
+		lossCheck();
+
 	}
 	
 	private void lossCheck() {
 		for (int i = 0; i < 20; i++) {
 			
 			for (int j = 0; j < 20; j++) {
+				//Add another loop to check every box after instead of just the next one.
+					if (box[j].getValue() > box[j + 1].getValue() && box[j + 1].getValue() != 0) {
+						
+						root.getChildren().remove(box[j]);
+						box[j].resetSquare();
+						root.add(box[j], j, 2);
 				
-				if (box[j].getTextFill() > box[j +1].getTextFill()) {
-					
-				}
-				
+						topBox[j].setMaxWidth(Region.USE_PREF_SIZE);
+						topBox[j].setPrefWidth(50);
+						
+						box[j].setMaxWidth(Region.USE_PREF_SIZE);
+						box[j].setPrefWidth(50);
+						
+						box[j].setDisable(true);
+						
+						lblNumber.setText("");
+						btnRandomNum.setDisable(true);
+						
+						lblLoser.setText("You Lose");
+						lblLoser2.setText("Press RESTART To Continue.");
+					}
 			}
-			//TODO: IMPLEMENT ALGORITHM TO CHECK IF NEXT NUMBER IS GREATER THAN PREVIOUS, IF YES THEN GAME GOES TILL 20 BOXES OCCUPIED, IF NO THEN GAME LOSS
+			
 		}
 		
 	}
@@ -217,6 +251,7 @@ public class oneTwoTwenty extends Application{
 				root.getChildren().remove(box[row]);
 				box[row].resetSquare();
 				root.add(box[row], row, 2);
+				box[row].setText("");
 			
 				topBox[row].setMaxWidth(Region.USE_PREF_SIZE);
 				topBox[row].setPrefWidth(50);
@@ -228,6 +263,8 @@ public class oneTwoTwenty extends Application{
 			}
 			
 			lblNumber.setText("");
+			lblLoser.setText("");
+			lblLoser2.setText("");
 			btnRandomNum.setDisable(false);
 
 	}
