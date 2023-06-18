@@ -28,5 +28,6 @@ public class Square extends Button {
     public void resetSquare() {
     	isFilled = false;
     	this.setText("");
+    	value = 0;
     }
 }
