@@ -445,12 +445,19 @@ public class oneTwoTwenty extends Application{
 	
 	private void showUser() {
 
-		if (txtUsername.getText().length() == 0) {
-			lblUser.setText("User: ANON");
-			return;
-		} 
+		String strUser = "";
 		
-		lblUser.setText("User: " + txtUsername.getText());
+		if (txtUsername.getText().length() == 0) {
+			
+			strUser = "ANON";
+			
+		} else if (txtUsername.getText().length() > 0) {
+			
+			strUser = txtUsername.getText();
+			
+		}
+		
+		lblUser.setText("User: " + strUser);
 	}
 	
 	public static void main(String[] args) {
