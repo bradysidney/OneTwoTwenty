@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -40,6 +41,9 @@ public class oneTwoTwenty extends Application{
 	TabPane tabs = new TabPane();
 	private int userScore;
     private TextField txtUsername;
+    
+	Image confetti = new Image(getClass().getResource("/images/confetti.gif").toString());
+	ImageView imgConfetti = new ImageView(confetti);
 	
 	public void start(Stage myStage) throws Exception {
 		menu = new GridPane();
@@ -234,6 +238,12 @@ public class oneTwoTwenty extends Application{
 		inst.add(imgLogo2, 0, 1);
 		GridPane.setHalignment(imgLogo2, HPos.CENTER);
 		
+		game.add(imgConfetti, 0, 0, 20, 20);
+		imgConfetti.setFitWidth(1600);
+		imgConfetti.setFitHeight(900);
+		GridPane.setHalignment(imgConfetti, HPos.CENTER);
+		imgConfetti.setVisible(false);
+		
 		gameTab.setContent(game);
 		instTab.setContent(inst);
 		menuTab.setContent(menu);
@@ -279,6 +289,7 @@ public class oneTwoTwenty extends Application{
 
 			}
 			
+			imgConfetti.setVisible(true);
 			winMsg.setText("WINNER WINNER\nCHICKEN DINNER!");
 			lblLoser2.setText("Press RESTART To Continue.");
 			lblLoser2.setDisable(false);
@@ -385,6 +396,7 @@ public class oneTwoTwenty extends Application{
 			userScore = 0;
 			lblScore.setText("SCORE: " + userScore);
 			winMsg.setText("");
+			imgConfetti.setVisible(false);
 
 	}
 	
