@@ -1,16 +1,17 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -23,6 +24,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import simpleIO.Console;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class oneTwoTwenty extends Application{
 	
@@ -37,13 +41,17 @@ public class oneTwoTwenty extends Application{
 	Tab instTab, menuTab, gameTab, scoresTab;
 	public int randomNum;
 	private Label lblNumber, lblLoser, lblLoser2, lblScore, lblGetUser, lblUser, winMsg;
-	public Button btnRandomNum, btnReset, btnInst, btnPlay, btnMenu, btnInst2, btnGame2, btnMenu2, btnPlay2, btnSubmit;
+	public Button btnRandomNum, btnReset, btnInst, btnPlay, btnMenu, btnInst2, btnGame2, btnMenu2, btnMenu3, btnPlay2, btnPlay3, btnInst3, btnSubmit, btnScores, btnScores2;
 	TabPane tabs = new TabPane();
 	private int userScore;
     private TextField txtUsername;
     
+    private ListView<String> leaderboard;
+    
 	Image confetti = new Image(getClass().getResource("/images/confetti.gif").toString());
 	ImageView imgConfetti = new ImageView(confetti);
+	
+	private static final String FILE_PATH = "C:\\Users\\brady\\git\\ics4u-rst-bradysidney\\ICS4U_RST\\data\\leaderboard.txt";
 	
 	public void start(Stage myStage) throws Exception {
 		menu = new GridPane();
@@ -139,20 +147,44 @@ public class oneTwoTwenty extends Application{
 		btnMenu2.setOnAction(event -> switchMenu(event));
 		btnMenu2.setMinWidth(115);
 		btnMenu2.setFont(Font.font("Courier New"));
-		game.add(btnMenu2, 14, 4, 2, 1);
+		game.add(btnMenu2, 12, 4, 2, 1);
 		btnMenu2.setTextAlignment(TextAlignment.CENTER);
+		
+		btnPlay3 = new Button("PLAY");
+		btnPlay3.setOnAction(event -> switchPlay(event));
+		btnPlay3.setMinWidth(140);
+		btnPlay3.setFont(Font.font("Courier New"));
+		score.add(btnPlay3, 0, 3);
+		btnPlay3.setTextAlignment(TextAlignment.CENTER);
+		GridPane.setHalignment(btnPlay3, HPos.CENTER);
+		
+		btnMenu3 = new Button("MENU");
+		btnMenu3.setOnAction(event -> switchMenu(event));
+		btnMenu3.setMinWidth(140);
+		btnMenu3.setFont(Font.font("Courier New"));
+		score.add(btnMenu3, 0, 4);
+		btnMenu3.setTextAlignment(TextAlignment.CENTER);
+		GridPane.setHalignment(btnMenu3, HPos.CENTER);
+		
+		btnInst3 = new Button("INSTRUCTIONS");
+		btnInst3.setOnAction(event -> switchInst(event));
+		btnInst3.setMinWidth(140);
+		btnInst3.setFont(Font.font("Courier New"));
+		score.add(btnInst3, 0, 5);
+		btnInst3.setTextAlignment(TextAlignment.CENTER);
+		GridPane.setHalignment(btnInst3, HPos.CENTER);
 		
 		btnReset = new Button("RESTART");
 		btnReset.setOnAction(event -> gameReset(true));
 		btnReset.setMinWidth(115);
 		btnReset.setFont(Font.font("Courier New"));
-		game.add(btnReset, 16, 4, 2, 1);
+		game.add(btnReset, 14, 4, 2, 1);
 		
 		btnInst2 = new Button("INSTRUCTIONS");
 		btnInst2.setOnAction(event -> switchInst(event));
 		btnInst2.setMinWidth(115);
 		btnInst2.setFont(Font.font("Courier New"));
-		game.add(btnInst2, 18, 4, 2, 1);
+		game.add(btnInst2, 16, 4, 2, 1);
 		btnInst2.setTextAlignment(TextAlignment.CENTER);
 		
 		btnRandomNum = new Button("NEW NUMBER");
@@ -168,6 +200,22 @@ public class oneTwoTwenty extends Application{
 		menu.add(btnInst, 0, 5);
 		btnInst.setTextAlignment(TextAlignment.CENTER);
 		GridPane.setHalignment(btnInst, HPos.CENTER);
+		
+		btnScores = new Button("SCORES");
+		btnScores.setOnAction(event -> switchScore(event));
+		btnScores.setMinWidth(140);
+		btnScores.setFont(Font.font("Courier New"));
+		menu.add(btnScores, 0, 6);
+		btnScores.setTextAlignment(TextAlignment.CENTER);
+		GridPane.setHalignment(btnScores, HPos.CENTER);
+		
+		btnScores2 = new Button("SCORES");
+		btnScores2.setOnAction(event -> switchScore(event));
+		btnScores2.setMinWidth(115);
+		btnScores2.setFont(Font.font("Courier New"));
+		game.add(btnScores2, 18, 4, 2, 1);
+		btnScores2.setTextAlignment(TextAlignment.CENTER);
+		GridPane.setHalignment(btnScores2, HPos.CENTER);
 		
 		btnPlay2 = new Button("PLAY");
 		btnPlay2.setOnAction(event -> switchPlay(event));
@@ -213,6 +261,14 @@ public class oneTwoTwenty extends Application{
 		inst.add(lblInst, 0, 3);
 		GridPane.setHalignment(lblInst, HPos.CENTER);
 		
+		Label lblLeader = new Label();
+		lblLeader.setFont(Font.font(MEDIUM_FONT));
+		lblLeader.setFont(Font.font("Courier New", 30));
+		lblLeader.setTextAlignment(TextAlignment.CENTER);
+		score.add(lblLeader, 0, 1);
+		lblLeader.setText("Previous Scores");
+		GridPane.setHalignment(lblLeader, HPos.CENTER);
+		
 		lblUser = new Label();
 		lblUser.setFont(Font.font(MEDIUM_FONT));
 		lblUser.setFont(Font.font("Courier New"));
@@ -243,6 +299,10 @@ public class oneTwoTwenty extends Application{
 		imgConfetti.setFitHeight(900);
 		GridPane.setHalignment(imgConfetti, HPos.CENTER);
 		imgConfetti.setVisible(false);
+		
+		leaderboard = new ListView<>();
+		score.add(leaderboard, 0, 2);
+		readLeaderboard();
 		
 		gameTab.setContent(game);
 		instTab.setContent(inst);
@@ -373,30 +433,51 @@ public class oneTwoTwenty extends Application{
 	}
 	
 	public void gameReset(boolean visible) {
+		
+		String username = ("");
+        String score = ("SCORE: " + userScore);
+		
+		if (txtUsername.getText().length() == 0) {
 			
-			for (int row = 0; row <= 19; row++) {
-				game.getChildren().remove(box[row]);
-				box[row].resetSquare();
-				game.add(box[row], row, 2);
+			username = "ANON";
 			
-				topBox[row].setMaxWidth(Region.USE_PREF_SIZE);
-				topBox[row].setPrefWidth(50);
-				
-				box[row].setMaxWidth(Region.USE_PREF_SIZE);
-				box[row].setPrefWidth(50);
-				
-				box[row].setDisable(true);
+		} else if (txtUsername.getText().length() > 0) {
+			
+			username = txtUsername.getText();
+			
+		}
+        // Append the username and score to the file
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH, true))) {
+            writer.println("USERNAME: " + username + ", " + score);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+			
+		for (int row = 0; row <= 19; row++) {
+			game.getChildren().remove(box[row]);
+			box[row].resetSquare();
+			game.add(box[row], row, 2);
+		
+			topBox[row].setMaxWidth(Region.USE_PREF_SIZE);
+			topBox[row].setPrefWidth(50);
+			
+			box[row].setMaxWidth(Region.USE_PREF_SIZE);
+			box[row].setPrefWidth(50);
+			
+			box[row].setDisable(true);
 
-			}
-			
-			lblNumber.setText("");
-			lblLoser.setText("");
-			lblLoser2.setText("");
-			btnRandomNum.setDisable(false);
-			userScore = 0;
-			lblScore.setText("SCORE: " + userScore);
-			winMsg.setText("");
-			imgConfetti.setVisible(false);
+		}
+		
+		lblNumber.setText("");
+		lblLoser.setText("");
+		lblLoser2.setText("");
+		btnRandomNum.setDisable(false);
+		userScore = 0;
+		lblScore.setText("SCORE: " + userScore);
+		winMsg.setText("");
+		imgConfetti.setVisible(false);
 
 	}
 	
@@ -443,6 +524,10 @@ public class oneTwoTwenty extends Application{
 		tabs.getSelectionModel().select(0);
 	}
 	
+	private void switchScore(ActionEvent event) {
+		tabs.getSelectionModel().select(3);
+	}
+	
 	private void showUser() {
 
 		String strUser = "";
@@ -458,6 +543,22 @@ public class oneTwoTwenty extends Application{
 		}
 		
 		lblUser.setText("User: " + strUser);
+	}
+	
+	private void readLeaderboard() {
+		try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            ObservableList<String> scores = FXCollections.observableArrayList();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                scores.add(line);
+            }
+            leaderboard.setItems(scores);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
 	}
 	
 	public static void main(String[] args) {

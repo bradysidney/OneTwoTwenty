@@ -1,5 +1,4 @@
-Score: 1
-Score: 1
-Score: 0
-Score: 0
-Score: 0
+USERNAME: ANON, SCORE: 12
+USERNAME: Brady, SCORE: 10
+USERNAME: Brady, SCORE: 10
+USERNAME: Brady, SCORE: 7
